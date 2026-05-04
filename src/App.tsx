@@ -47,6 +47,10 @@ const COMPONENTS = [
   "paper-bag", "perfume", "pizza-slice", "smartphone", "sneaker", "sunglasses",
 ];
 
+// Components that exist only as a noon-templated SVG and theme dynamically
+// for every brand (no per-brand pre-baked PNG).
+const EXTRA_COMPONENTS = ["pizza", "cart"];
+
 // Source palette in noon SVG templates — substitution map keys.
 const TEMPLATE = {
   tint_2: "#FFF2A8",
@@ -190,7 +194,7 @@ function App() {
 
   useEffect(() => {
     Promise.all(
-      COMPONENTS.map((name) =>
+      [...COMPONENTS, ...EXTRA_COMPONENTS].map((name) =>
         fetch(`/assets/components/noon/${name}.svg`)
           .then((r) => r.text())
           .then((text) => [name, text] as const)
@@ -283,10 +287,13 @@ function App() {
   }
 
   function getThemedSvg(componentName: string, brandKey: string): string | null {
-    if (allBrands[brandKey]?.custom) {
+    const b = allBrands[brandKey];
+    if (!b) return null;
+    // Custom brands and EXTRA components both render via inline themed SVG.
+    if (b.custom || EXTRA_COMPONENTS.includes(componentName)) {
       const tpl = templates[componentName];
       if (!tpl) return null;
-      return themeSvg(tpl, allBrands[brandKey].ramp);
+      return themeSvg(tpl, b.ramp);
     }
     return null;
   }
@@ -369,7 +376,9 @@ function App() {
 
   const dir = BRAND_DIRS[brand];
   const themedForModal =
-    modal && isCustom ? getThemedSvg(modal.name, brand) : null;
+    modal && (isCustom || (modal.kind === "asset" && EXTRA_COMPONENTS.includes(modal.name)))
+      ? getThemedSvg(modal.name, brand)
+      : null;
   const generatedForBrand = generated[brand] ?? [];
 
   return (
@@ -494,6 +503,29 @@ function App() {
                 </button>
               );
             })}
+            {EXTRA_COMPONENTS.map((name, i) => {
+              const themed = getThemedSvg(name, brand);
+              return (
+                <button
+                  key={name}
+                  className="card"
+                  onClick={() => setModal({ kind: "asset", name })}
+                >
+                  <span className="card-num">
+                    {String(COMPONENTS.length + i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="card-img">
+                    {themed && (
+                      <span
+                        className="svg-host"
+                        dangerouslySetInnerHTML={{ __html: themed }}
+                      />
+                    )}
+                  </div>
+                  <div className="card-name">{name.replace(/-/g, " ")}</div>
+                </button>
+              );
+            })}
             {generatedForBrand.map((g, i) => (
               <button
                 key={`gen-${i}-${g.name}`}
@@ -599,7 +631,7 @@ function App() {
                 >
                   Copy SVG
                 </button>
-                {modal.kind === "asset" && !isCustom && (
+                {modal.kind === "asset" && !isCustom && !EXTRA_COMPONENTS.includes(modal.name) && (
                   <button
                     className="btn"
                     onClick={() =>

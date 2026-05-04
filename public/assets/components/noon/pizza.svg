@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <ellipse cx="200" cy="335" rx="155" ry="14" fill="#B27800" opacity="0.25"/>
+  <circle cx="200" cy="220" r="155" fill="#B27800"/>
+  <circle cx="200" cy="210" r="155" fill="#E8A500"/>
+  <circle cx="200" cy="205" r="155" fill="#FFCD00"/>
+  <circle cx="200" cy="205" r="125" fill="#E8A500"/>
+  <circle cx="200" cy="200" r="125" fill="#FFE066"/>
+  <path d="M 100 165 Q 145 145 200 145 Q 255 145 295 165 Q 280 175 245 173 Q 210 168 175 175 Q 135 180 100 165 Z" fill="#FFF2A8"/>
+  <circle cx="148" cy="165" r="18" fill="#B27800"/>
+  <circle cx="148" cy="160" r="18" fill="#E8A500"/>
+  <circle cx="252" cy="155" r="18" fill="#B27800"/>
+  <circle cx="252" cy="150" r="18" fill="#E8A500"/>
+  <circle cx="135" cy="240" r="17" fill="#B27800"/>
+  <circle cx="135" cy="235" r="17" fill="#E8A500"/>
+  <circle cx="270" cy="225" r="18" fill="#B27800"/>
+  <circle cx="270" cy="220" r="18" fill="#E8A500"/>
+  <circle cx="200" cy="265" r="18" fill="#B27800"/>
+  <circle cx="200" cy="260" r="18" fill="#E8A500"/>
+  <circle cx="205" cy="195" r="16" fill="#B27800"/>
+  <circle cx="205" cy="190" r="16" fill="#E8A500"/>
+  <circle cx="143" cy="155" r="4" fill="#FFF2A8"/>
+  <circle cx="247" cy="145" r="4" fill="#FFF2A8"/>
+  <circle cx="130" cy="230" r="4" fill="#FFF2A8"/>
+  <circle cx="265" cy="215" r="4" fill="#FFF2A8"/>
+  <circle cx="195" cy="255" r="4" fill="#FFF2A8"/>
+  <circle cx="200" cy="185" r="4" fill="#FFF2A8"/>
+  <circle cx="170" cy="220" r="3" fill="#FFCD00"/>
+  <circle cx="230" cy="245" r="3" fill="#FFCD00"/>
+  <circle cx="175" cy="195" r="2.5" fill="#FFCD00"/>
+  <circle cx="240" cy="195" r="2.5" fill="#FFCD00"/>
+  <circle cx="220" cy="230" r="2.5" fill="#FFCD00"/>
+  <rect x="60" y="180" width="6" height="14" fill="#FFFFFF" rx="2" transform="rotate(35 63 187)"/>
+  <rect x="335" y="190" width="6" height="14" fill="#FFFFFF" rx="2" transform="rotate(-35 338 197)"/>
+  <rect x="195" y="60" width="6" height="14" fill="#FFFFFF" rx="2" transform="rotate(0 198 67)"/>
+</svg>
