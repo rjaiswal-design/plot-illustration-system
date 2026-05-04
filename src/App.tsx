@@ -49,7 +49,7 @@ const COMPONENTS = [
 
 // Components that exist only as a noon-templated SVG and theme dynamically
 // for every brand (no per-brand pre-baked PNG).
-const EXTRA_COMPONENTS = ["pizza", "cart"];
+const EXTRA_COMPONENTS = ["pizza", "cart", "groceries"];
 
 // Source palette in noon SVG templates — substitution map keys.
 const TEMPLATE = {
