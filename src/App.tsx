@@ -159,7 +159,11 @@ function App() {
   const [palettes, setPalettes] = useState<Palettes | null>(null);
   const [customBrands, setCustomBrands] = useState<Record<string, Brand>>({});
   const [brand, setBrand] = useState<string>("noon");
-  const [modal, setModal] = useState<{ name: string } | null>(null);
+  const [modal, setModal] = useState<
+    | { kind: "asset"; name: string }
+    | { kind: "generated"; name: string; svg: string }
+    | null
+  >(null);
   const [toast, setToast] = useState<string>("");
 
   // Template SVGs (noon brand) cached for re-theming custom brands.
@@ -169,6 +173,14 @@ function App() {
   const [createOpen, setCreateOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [hsl, setHsl] = useState({ h: 200, s: 70, l: 50 });
+
+  // Generate-illustration modal state.
+  const [genOpen, setGenOpen] = useState(false);
+  const [genPrompt, setGenPrompt] = useState("");
+  const [genLoading, setGenLoading] = useState(false);
+  const [genError, setGenError] = useState<string>("");
+  const [genResult, setGenResult] = useState<{ svg: string; name: string } | null>(null);
+  const [generated, setGenerated] = useState<Record<string, { name: string; svg: string }[]>>({});
 
   useEffect(() => {
     fetch("/assets/palettes.json")
@@ -305,11 +317,60 @@ function App() {
     window.setTimeout(() => setToast(""), 1600);
   }
 
+  async function generateIllustration() {
+    if (!genPrompt.trim() || !ramp) return;
+    setGenLoading(true);
+    setGenError("");
+    setGenResult(null);
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: genPrompt.trim(),
+          ramp,
+          brandName: BRAND_LABELS[brand] ?? brand,
+        }),
+      });
+      const ct = res.headers.get("content-type") ?? "";
+      if (!ct.includes("application/json")) {
+        setGenError(
+          "API route not available. The /api/generate function only runs on Vercel — deploy the app or run `vercel dev` locally."
+        );
+        return;
+      }
+      const data = await res.json();
+      if (!res.ok) {
+        setGenError(data.error ?? `HTTP ${res.status}`);
+      } else {
+        setGenResult({ svg: data.svg, name: data.name });
+      }
+    } catch (e) {
+      setGenError(e instanceof Error ? e.message : "Request failed");
+    } finally {
+      setGenLoading(false);
+    }
+  }
+
+  function addGeneratedToLibrary() {
+    if (!genResult) return;
+    setGenerated((prev) => ({
+      ...prev,
+      [brand]: [...(prev[brand] ?? []), genResult],
+    }));
+    setToast(`Added "${genResult.name}"`);
+    window.setTimeout(() => setToast(""), 1600);
+    setGenResult(null);
+    setGenPrompt("");
+    setGenOpen(false);
+  }
+
   if (!palettes) return null;
 
   const dir = BRAND_DIRS[brand];
   const themedForModal =
     modal && isCustom ? getThemedSvg(modal.name, brand) : null;
+  const generatedForBrand = generated[brand] ?? [];
 
   return (
     <div className="app">
@@ -398,7 +459,12 @@ function App() {
         <section id="components" className="section">
           <div className="section-head">
             <h2>Components</h2>
-            <span className="section-num">SECTION 02 / 04</span>
+            <div className="section-actions">
+              <button className="btn btn-ghost" onClick={() => setGenOpen(true)}>
+                <span className="sparkle">✦</span> Generate illustration
+              </button>
+              <span className="section-num">SECTION 02 / 04</span>
+            </div>
           </div>
           <p className="section-desc">
             Click any component to view full-size and download as SVG (editable) or PNG. Components
@@ -411,7 +477,7 @@ function App() {
                 <button
                   key={name}
                   className="card"
-                  onClick={() => setModal({ name })}
+                  onClick={() => setModal({ kind: "asset", name })}
                 >
                   <span className="card-num">{String(i + 1).padStart(2, "0")}</span>
                   <div className="card-img">
@@ -428,6 +494,22 @@ function App() {
                 </button>
               );
             })}
+            {generatedForBrand.map((g, i) => (
+              <button
+                key={`gen-${i}-${g.name}`}
+                className="card card-generated"
+                onClick={() => setModal({ kind: "generated", name: g.name, svg: g.svg })}
+              >
+                <span className="card-num">G{String(i + 1).padStart(2, "0")}</span>
+                <div className="card-img">
+                  <span
+                    className="svg-host"
+                    dangerouslySetInnerHTML={{ __html: g.svg }}
+                  />
+                </div>
+                <div className="card-name">{g.name.replace(/-/g, " ")}</div>
+              </button>
+            ))}
           </div>
         </section>
 
@@ -470,63 +552,68 @@ function App() {
         </section>
       </main>
 
-      {modal && (
-        <div className="modal-backdrop" onClick={() => setModal(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setModal(null)}>×</button>
-            <div className="modal-svg-wrap">
-              {themedForModal ? (
-                <span
-                  className="svg-host svg-host-lg"
-                  dangerouslySetInnerHTML={{ __html: themedForModal }}
-                />
-              ) : (
-                <img src={`/assets/png/${dir}/${modal.name}.png`} alt={modal.name} />
-              )}
-            </div>
-            <div className="modal-title">{modal.name.replace(/-/g, " ")}</div>
-            <div className="modal-meta">{BRAND_LABELS[brand] ?? brand} · pre-themed</div>
-            <div className="modal-actions">
-              <button
-                className="btn btn-primary"
-                onClick={() => {
-                  if (themedForModal) {
-                    downloadSvgText(themedForModal, `${modal.name}.svg`);
-                  } else {
-                    downloadFile(`/assets/components/${dir}/${modal.name}.svg`, `${modal.name}.svg`);
-                  }
-                }}
-              >
-                Download SVG
-              </button>
-              <button
-                className="btn"
-                onClick={async () => {
-                  if (themedForModal) {
-                    const ok = await writeClipboard(themedForModal);
-                    setToast(ok ? `Copied ${modal.name}.svg` : "Copy failed");
-                    window.setTimeout(() => setToast(""), 1400);
-                  } else {
-                    copySvgFromUrl(`/assets/components/${dir}/${modal.name}.svg`, modal.name);
-                  }
-                }}
-              >
-                Copy SVG
-              </button>
-              {!isCustom && (
+      {modal && (() => {
+        const isGen = modal.kind === "generated";
+        const svgForModal = isGen ? modal.svg : themedForModal;
+        const meta = isGen ? "AI generated" : "pre-themed";
+        return (
+          <div className="modal-backdrop" onClick={() => setModal(null)}>
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
+              <button className="modal-close" onClick={() => setModal(null)}>×</button>
+              <div className="modal-svg-wrap">
+                {svgForModal ? (
+                  <span
+                    className="svg-host svg-host-lg"
+                    dangerouslySetInnerHTML={{ __html: svgForModal }}
+                  />
+                ) : (
+                  <img src={`/assets/png/${dir}/${modal.name}.png`} alt={modal.name} />
+                )}
+              </div>
+              <div className="modal-title">{modal.name.replace(/-/g, " ")}</div>
+              <div className="modal-meta">{BRAND_LABELS[brand] ?? brand} · {meta}</div>
+              <div className="modal-actions">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    if (svgForModal) {
+                      downloadSvgText(svgForModal, `${modal.name}.svg`);
+                    } else {
+                      downloadFile(`/assets/components/${dir}/${modal.name}.svg`, `${modal.name}.svg`);
+                    }
+                  }}
+                >
+                  Download SVG
+                </button>
                 <button
                   className="btn"
-                  onClick={() =>
-                    downloadFile(`/assets/png/${dir}/${modal.name}.png`, `${modal.name}.png`)
-                  }
+                  onClick={async () => {
+                    if (svgForModal) {
+                      const ok = await writeClipboard(svgForModal);
+                      setToast(ok ? `Copied ${modal.name}.svg` : "Copy failed");
+                      window.setTimeout(() => setToast(""), 1400);
+                    } else {
+                      copySvgFromUrl(`/assets/components/${dir}/${modal.name}.svg`, modal.name);
+                    }
+                  }}
                 >
-                  Download PNG
+                  Copy SVG
                 </button>
-              )}
+                {modal.kind === "asset" && !isCustom && (
+                  <button
+                    className="btn"
+                    onClick={() =>
+                      downloadFile(`/assets/png/${dir}/${modal.name}.png`, `${modal.name}.png`)
+                    }
+                  >
+                    Download PNG
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {createOpen && (
         <div className="modal-backdrop" onClick={() => setCreateOpen(false)}>
@@ -628,6 +715,99 @@ function App() {
               <button className="btn" onClick={() => setCreateOpen(false)}>
                 Cancel
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {genOpen && (
+        <div className="modal-backdrop" onClick={() => setGenOpen(false)}>
+          <div className="modal create-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setGenOpen(false)}>×</button>
+            <div className="create-eyebrow">GENERATE ILLUSTRATION</div>
+            <div className="modal-title create-title">Describe what you want</div>
+            <p className="create-desc">
+              Claude generates a flat-vector SVG in the noon house style, locked to{" "}
+              <strong>{BRAND_LABELS[brand] ?? brand}</strong>'s 5-tone ramp. Be specific about subject
+              and composition.
+            </p>
+
+            <label className="field">
+              <span className="field-label">Prompt</span>
+              <textarea
+                className="input textarea"
+                placeholder="e.g. a vintage film camera, 3/4 view, with a soft strap looping behind"
+                rows={4}
+                value={genPrompt}
+                onChange={(e) => setGenPrompt(e.target.value)}
+                disabled={genLoading}
+              />
+            </label>
+
+            <div className="ramp-row ramp-row-compact">
+              {(["tint_2", "tint_1", "base", "shade_1", "shade_2"] as const).map((k) =>
+                ramp ? (
+                  <div key={k} className="ramp-cell">
+                    <div className="ramp-chip ramp-chip-sm" style={{ background: ramp[k] }} />
+                    <div className="ramp-name">{k}</div>
+                  </div>
+                ) : null
+              )}
+            </div>
+
+            {genError && <div className="gen-error">{genError}</div>}
+
+            {genResult && (
+              <div className="gen-result">
+                <div className="create-preview-label">PREVIEW</div>
+                <div className="gen-preview">
+                  <span
+                    className="svg-host"
+                    dangerouslySetInnerHTML={{ __html: genResult.svg }}
+                  />
+                </div>
+                <div className="gen-result-name">{genResult.name.replace(/-/g, " ")}</div>
+              </div>
+            )}
+
+            <div className="modal-actions">
+              {!genResult ? (
+                <>
+                  <button
+                    className="btn btn-primary"
+                    onClick={generateIllustration}
+                    disabled={genLoading || !genPrompt.trim()}
+                  >
+                    {genLoading ? "Generating…" : "Generate"}
+                  </button>
+                  <button
+                    className="btn"
+                    onClick={() => setGenOpen(false)}
+                    disabled={genLoading}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className="btn btn-primary" onClick={addGeneratedToLibrary}>
+                    Add to library
+                  </button>
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      setGenResult(null);
+                      generateIllustration();
+                    }}
+                    disabled={genLoading}
+                  >
+                    Regenerate
+                  </button>
+                  <button className="btn" onClick={() => setGenResult(null)}>
+                    Discard
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
