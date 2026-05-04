@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><defs>
+  <pattern id="hatch" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(-45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#1A1A66" stroke-width="2"/>
+  </pattern>
+</defs>
+  <ellipse cx="200" cy="360" rx="140" ry="14" fill="#1A1A66" opacity="0.25"/>
+  <polygon points="320,140 380,170 380,330 320,360" fill="#2E2E99"/>
+  <polygon points="320,140 380,170 380,330 320,360" fill="url(#hatch)" opacity="0.55"/>
+  <polygon points="80,110 200,60 320,110 200,160" fill="#9999E5"/>
+  <polygon points="80,110 320,110 320,360 80,360" fill="#4B4BCC"/>
+  <rect x="80" y="220" width="240" height="22" fill="#2E2E99"/>
+  <rect x="80" y="220" width="240" height="3" fill="#9999E5"/>
+  <rect x="130" y="135" width="140" height="70" fill="#4B4BCC" rx="4"/>
+  <text x="200" y="180" font-family="Helvetica, Arial, sans-serif" font-weight="900"
+        font-size="30" text-anchor="middle" fill="#FFD700">supermall</text>
+  <polygon points="80,110 200,60 320,110 200,160" fill="#D6D6F5" opacity="0.35"/>
+</svg>

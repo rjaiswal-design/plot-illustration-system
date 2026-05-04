@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><defs>
+  <pattern id="hatch" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(-45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#B27800" stroke-width="2"/>
+  </pattern>
+</defs>
+  <ellipse cx="200" cy="345" rx="120" ry="8" fill="#B27800" opacity="0.3"/>
+  <path d="M 200 80 L 80 320 L 320 320 Z" fill="#FFCD00"/>
+  <path d="M 80 320 L 320 320 L 305 340 L 95 340 Z" fill="#E8A500"/>
+  <path d="M 80 320 L 320 320 L 305 340 L 95 340 Z" fill="url(#hatch)" opacity="0.4"/>
+  <path d="M 90 305 Q 110 295 130 305 Q 160 295 180 305 Q 210 295 240 305 Q 270 295 290 305 Q 310 295 320 320 L 80 320 Z" fill="#FFE066"/>
+  <circle cx="160" cy="240" r="20" fill="#B27800"/>
+  <circle cx="155" cy="235" r="18" fill="#E8A500"/>
+  <circle cx="240" cy="240" r="20" fill="#B27800"/>
+  <circle cx="235" cy="235" r="18" fill="#E8A500"/>
+  <circle cx="200" cy="180" r="16" fill="#B27800"/>
+  <circle cx="195" cy="175" r="14" fill="#E8A500"/>
+  <circle cx="195" cy="290" r="14" fill="#B27800"/>
+  <circle cx="190" cy="285" r="12" fill="#E8A500"/>
+  <path d="M 200 80 L 130 220 Q 160 215 175 175 Z" fill="#FFF2A8" opacity="0.4"/>
+</svg>

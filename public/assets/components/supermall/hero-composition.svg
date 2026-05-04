@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 540" width="600" height="540"><defs>
+  <pattern id="hatch" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(-45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#1A1A66" stroke-width="2"/>
+  </pattern>
+</defs>
+  <ellipse cx="300" cy="500" rx="280" ry="20" fill="#1A1A66" opacity="0.2"/>
+  <!-- Background back item: bottle (peeking behind on right) -->
+  <g transform="translate(350,80) scale(0.5)">
+    <path d="M 160 130 Q 160 110 175 105 L 175 80 Q 175 70 200 70 Q 225 70 225 80 L 225 105 Q 240 110 240 130 L 240 350 Q 240 365 225 365 L 175 365 Q 160 365 160 350 Z" fill="#4B4BCC"/>
+    <path d="M 220 130 L 240 130 L 240 350 Q 240 365 225 365 L 215 365 Z" fill="#2E2E99"/>
+    <rect x="175" y="60" width="50" height="20" fill="#1A1A66" rx="3"/>
+    <rect x="160" y="200" width="80" height="60" fill="#FFFFFF"/>
+  </g>
+  <!-- Background back item: building (peeking behind on far left) -->
+  <g transform="translate(-30,150) scale(0.45)">
+    <rect x="80" y="80" width="200" height="290" fill="#2E2E99"/>
+    <rect x="100" y="115" width="50" height="40" fill="#FFFFFF"/>
+    <rect x="160" y="115" width="50" height="40" fill="#FFFFFF"/>
+    <rect x="220" y="115" width="50" height="40" fill="#FFFFFF"/>
+  </g>
+  <!-- HERO: paper bag center -->
+  <g transform="translate(120,120)">
+    <path d="M 90 140 L 310 140 L 320 360 L 80 360 Z" fill="#4B4BCC"/>
+    <path d="M 250 140 L 310 140 L 320 360 L 260 360 Z" fill="#2E2E99"/>
+    <path d="M 250 140 L 310 140 L 320 360 L 260 360 Z" fill="url(#hatch)" opacity="0.45"/>
+    <rect x="90" y="140" width="220" height="14" fill="#9999E5"/>
+    <path d="M 130 140 Q 130 90 170 90 Q 210 90 210 140" stroke="#2E2E99" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M 200 140 Q 200 90 240 90 Q 280 90 280 140" stroke="#2E2E99" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <rect x="130" y="210" width="140" height="80" fill="#4B4BCC" rx="6"/>
+    <text x="200" y="260" font-family="Helvetica, Arial, sans-serif" font-weight="900"
+          font-size="22" text-anchor="middle" fill="#FFD700">supermall</text>
+  </g>
+  <!-- Front-left item: apple/produce -->
+  <g transform="translate(-20,330) scale(0.5)">
+    <path d="M 200 130 Q 130 130 110 220 Q 100 320 200 335 Q 300 320 290 220 Q 270 130 200 130 Z" fill="#4B4BCC"/>
+    <path d="M 250 145 Q 290 165 290 220 Q 300 320 200 335 Q 240 320 250 220 Q 240 165 250 145 Z" fill="#2E2E99"/>
+    <ellipse cx="160" cy="180" rx="22" ry="40" fill="#D6D6F5" opacity="0.85"/>
+    <path d="M 200 130 Q 205 105 220 95" stroke="#1A1A66" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M 220 100 Q 250 85 270 105 Q 250 125 220 110 Z" fill="#2E2E99"/>
+  </g>
+  <!-- Front-right item: bottle small -->
+  <g transform="translate(440,300) scale(0.45)">
+    <path d="M 160 130 Q 160 110 175 105 L 175 80 Q 175 70 200 70 Q 225 70 225 80 L 225 105 Q 240 110 240 130 L 240 350 Q 240 365 225 365 L 175 365 Q 160 365 160 350 Z" fill="#4B4BCC"/>
+    <path d="M 220 130 L 240 130 L 240 350 Q 240 365 225 365 L 215 365 Z" fill="#2E2E99"/>
+    <rect x="175" y="60" width="50" height="20" fill="#1A1A66" rx="3"/>
+    <rect x="160" y="200" width="80" height="80" fill="#FFFFFF"/>
+  </g>
+</svg>

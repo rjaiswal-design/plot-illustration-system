@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <ellipse cx="200" cy="370" rx="80" ry="8" fill="#B71F4F" opacity="0.3"/>
+  <rect x="180" y="50" width="40" height="40" fill="#B71F4F" rx="3"/>
+  <rect x="180" y="50" width="40" height="10" fill="#1A1A1A" rx="3"/>
+  <rect x="190" y="90" width="20" height="14" fill="#E94679"/>
+  <rect x="170" y="104" width="60" height="22" fill="#E94679"/>
+  <path d="M 130 130 L 270 130 L 280 360 L 120 360 Z" fill="#F47CA0"/>
+  <path d="M 230 130 L 270 130 L 280 360 L 240 360 Z" fill="#E94679"/>
+  <rect x="135" y="150" width="14" height="180" fill="#FFE5EE" opacity="0.85"/>
+  <rect x="150" y="220" width="100" height="80" fill="#FFFFFF"/>
+  <rect x="150" y="220" width="100" height="6" fill="#E94679"/>
+  <rect x="150" y="294" width="100" height="6" fill="#E94679"/>
+  <text x="200" y="265" font-family="Helvetica, Arial, sans-serif" font-weight="700"
+        font-size="20" text-anchor="middle" fill="#1A1A1A">SCENT</text>
+</svg>

@@ -1,0 +1,80 @@
+{
+  "system_version": "1.0",
+  "philosophy": "Each marketplace uses a 5-tone monochromatic ramp built around its signature hue. Shapes are rendered with a SOLID base + LIGHT highlight + DARK shadow + DARKEST detail/hatching, plus WHITE for shine.",
+  "neutrals": {
+    "white": "#FFFFFF",
+    "off_white": "#FAFAFA",
+    "ink": "#1A1A1A",
+    "true_black": "#000000"
+  },
+  "brands": {
+    "noon": {
+      "tagline": "The general marketplace — yellow",
+      "ramp": {
+        "tint_2": "#FFF2A8",
+        "tint_1": "#FFE066",
+        "base":   "#FFCD00",
+        "shade_1":"#E8A500",
+        "shade_2":"#B27800"
+      },
+      "logo_color": "#1A1A1A"
+    },
+    "noon_food": {
+      "tagline": "Food delivery — pink",
+      "ramp": {
+        "tint_2": "#FFE5EE",
+        "tint_1": "#FFB3C9",
+        "base":   "#F47CA0",
+        "shade_1":"#E94679",
+        "shade_2":"#B71F4F"
+      },
+      "logo_color": "#1A1A1A",
+      "logo_accent": "#F47CA0"
+    },
+    "minutes": {
+      "tagline": "Quick commerce / 15-min delivery — red coral",
+      "ramp": {
+        "tint_2": "#FFD4B8",
+        "tint_1": "#FFB088",
+        "base":   "#F47C5A",
+        "shade_1":"#D54B33",
+        "shade_2":"#8B2A1F"
+      },
+      "logo_badge": "#E63223",
+      "logo_color": "#FFFFFF"
+    },
+    "supermall": {
+      "tagline": "Premium lifestyle marketplace — blue/indigo",
+      "ramp": {
+        "tint_2": "#D6D6F5",
+        "tint_1": "#9999E5",
+        "base":   "#4B4BCC",
+        "shade_1":"#2E2E99",
+        "shade_2":"#1A1A66"
+      },
+      "logo_color": "#FFD700",
+      "logo_bg": "#4B4BCC"
+    },
+    "nownow": {
+      "tagline": "Convenience / everyday essentials — orange",
+      "ramp": {
+        "tint_2": "#FFE0B5",
+        "tint_1": "#FFB870",
+        "base":   "#FF8533",
+        "shade_1":"#E0651A",
+        "shade_2":"#8C3D0F"
+      },
+      "logo_color": "#FFFFFF",
+      "logo_bg": "#1A1A1A"
+    }
+  },
+  "usage_rules": {
+    "tint_2": "Specular highlights on glass/metal/glossy surfaces; rim lights",
+    "tint_1": "Mid-light planes facing the light; soft fills",
+    "base": "Primary fill color of the object — the dominant tone",
+    "shade_1": "Cast shadows, side planes, contour edges",
+    "shade_2": "Deepest accents — diagonal hatching texture, packaging seams, deep cavities",
+    "white": "Logo backgrounds, sharp specular highlights, paper labels",
+    "ink": "Logos, line accents (used sparingly)"
+  }
+}

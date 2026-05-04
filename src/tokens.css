@@ -1,0 +1,308 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Unboxed UI Kit — Design Tokens
+   Import once at app root: `import "@unboxed/ui/tokens.css"`
+   Extend a token by overriding the CSS variable in your own stylesheet.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Google fonts are imported once at the app root (see app/globals.css). */
+
+:root {
+  /* Surfaces */
+  --ub-bg: #111111;
+  --ub-bg-deep: #0e0e0e;
+  --ub-bg-black: #000000;
+  --ub-surface: #161616;
+  --ub-surface-2: #1a1a1a;
+  --ub-surface-3: #1c1c1c;
+  --ub-surface-hover: #1f1f1f;
+  --ub-menu: #252525;
+  --ub-menu-hover: #2b2b2b;
+
+  /* Text */
+  --ub-fg: #f0f0f0;
+  --ub-fg-strong: #ffffff;
+  --ub-fg-soft: #e8e8e8;
+  --ub-fg-muted: #a0a0a0;
+  --ub-fg-mutedXX: #938c8c;
+  --ub-fg-disabled: #727272;
+  --ub-fg-inactive: #666666;
+  --ub-fg-secondary: #555555;
+
+  /* Brand & state */
+  --ub-accent: #ff5800;
+  --ub-accent-2: #fc6605;
+  --ub-accent-hover: #ff6a1a;
+  --ub-success: #4ade80;
+  --ub-success-deep: #30ae4a;
+  --ub-danger: #e05a5a;
+
+  /* Translucent layers */
+  --ub-accent-12: rgba(255, 88, 0, 0.12);
+  --ub-accent-08: rgba(255, 88, 0, 0.08);
+  --ub-accent-06: rgba(255, 88, 0, 0.06);
+  --ub-accent-03: rgba(255, 88, 0, 0.03);
+  --ub-accent-border: rgba(255, 88, 0, 0.18);
+  --ub-overlay: rgba(0, 0, 0, 0.72);
+  --ub-overlay-soft: rgba(0, 0, 0, 0.6);
+  --ub-fg-12: rgba(240, 240, 240, 0.12);
+  --ub-fg-07: rgba(240, 240, 240, 0.07);
+  --ub-fg-025: rgba(240, 240, 240, 0.025);
+
+  /* Borders */
+  --ub-border: #2a2a2a;
+  --ub-border-soft: #1a1a1a;
+  --ub-border-strong: #3a3a3a;
+  --ub-border-accent: rgba(255, 88, 0, 0.2);
+
+  /* Typography */
+  --ub-font-title: "Cormorant Garamond", Georgia, serif;
+  --ub-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --ub-font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+
+  /* Radii */
+  --ub-radius-xs: 3px;
+  --ub-radius-sm: 4px;
+  --ub-radius-md: 6px;
+  --ub-radius-lg: 8px;
+  --ub-radius-xl: 12px;
+  --ub-radius-2xl: 16px;
+  --ub-radius-pill: 999px;
+
+  /* Shadows */
+  --ub-shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --ub-shadow-md: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --ub-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --ub-shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.7);
+  --ub-shadow-modal: 0 32px 80px rgba(0, 0, 0, 0.8);
+  --ub-glow-accent: 0 0 18px rgba(255, 88, 0, 0.45);
+
+  /* Easings */
+  --ub-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ub-ease-emphasis: cubic-bezier(0.16, 1, 0.3, 1);
+  --ub-ease-spring-light: cubic-bezier(0.34, 1.2, 0.64, 1);
+  --ub-ease-spring-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ub-ease-out-strong: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Layout helpers (consumed by some flavored components) */
+  --ub-sidebar-w: 55px;
+  --ub-rail-left: 150px;
+  --ub-content-w: 548px;
+  --ub-phone-w: 480px;
+}
+
+/* ── Utility classes provided by the kit ─────────────────────────────────── */
+
+.ub-title {
+  font-family: var(--ub-font-title);
+  font-weight: 500;
+  font-size: 60px;
+  letter-spacing: -1.8px;
+  line-height: 1;
+  color: var(--ub-fg);
+}
+
+.ub-mono {
+  font-family: var(--ub-font-mono);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.ub-body {
+  font-family: var(--ub-font-body);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 27px;
+  letter-spacing: -0.16px;
+  color: var(--ub-fg-soft);
+}
+
+/* ── Dotted grid backgrounds ─────────────────────────────────────────────── */
+
+.ub-dotgrid {
+  background-image: radial-gradient(circle, rgba(240, 240, 240, 0.13) 1.1px, transparent 1.1px);
+  background-size: 24px 24px;
+  background-position: 0 0;
+}
+
+.ub-dotgrid-dense {
+  background-image: radial-gradient(circle, rgba(240, 240, 240, 0.10) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+.ub-dotgrid-mask {
+  -webkit-mask-image: radial-gradient(ellipse 90% 75% at 50% 30%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 75% at 50% 30%, #000 55%, transparent 100%);
+}
+
+.ub-aura-orange {
+  background:
+    radial-gradient(900px 500px at 18% 0%,  rgba(255,88,0,0.18), transparent 60%),
+    radial-gradient(700px 400px at 80% 10%, rgba(255,88,0,0.08), transparent 65%);
+  pointer-events: none;
+}
+
+.ub-vignette {
+  background: radial-gradient(ellipse at center, transparent 40%, var(--ub-bg) 100%);
+  pointer-events: none;
+}
+
+.ub-noise {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  pointer-events: none;
+}
+
+/* ── Live ripple keyframes ───────────────────────────────────────────────── */
+@keyframes ub-ripple {
+  0%   { transform: scale(0.8); opacity: 0.7; }
+  100% { transform: scale(3);   opacity: 0;   }
+}
+@keyframes ub-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes ub-pop-in {
+  from { opacity: 0; transform: scale(0.96) translateY(-8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes ub-skeleton {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes ub-sheet-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes ub-sheet-left {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes ub-sheet-bottom {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+/* ── BlurReveal ──────────────────────────────────────────────────────────── */
+
+.ub-blur-reveal {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Idle state: banner fully clipped + blurred so nothing peeks out before the trigger. */
+.ub-blur-reveal__banner {
+  position: relative;
+  z-index: 1;
+  clip-path: inset(0 100% 0 0);
+  filter: blur(var(--ub-br-blur, 12px));
+}
+
+.ub-blur-reveal[data-phase="play"] .ub-blur-reveal__banner {
+  animation:
+    ub-br-reveal var(--ub-br-clip, 2000ms) cubic-bezier(0.4, 0, 0.2, 1) forwards,
+    ub-br-deblur var(--ub-br-fade, 3000ms) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.ub-blur-reveal[data-phase="done"] .ub-blur-reveal__banner {
+  clip-path: inset(0 0 0 0);
+  filter: blur(0);
+}
+
+.ub-blur-reveal__effects {
+  position: absolute;
+  inset: 0;
+  margin-left: -2rem;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 60%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 60%, transparent 100%);
+  -webkit-mask-size: 35% 100%;
+  mask-size: 35% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: -35% 0;
+  mask-position: -35% 0;
+}
+
+.ub-blur-reveal[data-phase="play"] .ub-blur-reveal__effects {
+  animation: ub-br-sweep var(--ub-br-clip, 2000ms) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.ub-blur-reveal__blur {
+  position: absolute;
+  inset: 0;
+  -webkit-backdrop-filter: blur(var(--ub-br-blur, 10px));
+  backdrop-filter: blur(var(--ub-br-blur, 10px));
+  background: rgba(17, 17, 17, 0.4);
+}
+
+.ub-blur-reveal__noise {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+}
+
+@keyframes ub-br-reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes ub-br-deblur {
+  0%   { filter: blur(var(--ub-br-blur, 10px)); }
+  60%  { filter: blur(calc(var(--ub-br-blur, 10px) * 0.35)); }
+  100% { filter: blur(0); }
+}
+
+@keyframes ub-br-sweep {
+  0%   { -webkit-mask-position: -35% 0; mask-position: -35% 0; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { -webkit-mask-position: 135% 0; mask-position: 135% 0; opacity: 0; }
+}
+
+/* ── Logos carousel (compat alias for upstream brand SVGs) ───────────────── */
+:root { --color-gray12: var(--ub-fg); }
+
+.ub-logos-row {
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.ub-logo {
+  --delay: 0s;
+  opacity: 0;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+.ub-logo[data-animate="true"][data-state="exit"] {
+  animation: ub-logo-exit 700ms var(--delay) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 1;
+}
+
+.ub-logo[data-animate="true"][data-state="enter"] {
+  animation: ub-logo-enter 700ms var(--delay) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.ub-logo[data-animate="false"] {
+  opacity: 1;
+}
+
+@keyframes ub-logo-exit {
+  0%   { opacity: 1; filter: blur(0);   transform: translateY(0); }
+  100% { opacity: 0; filter: blur(8px); transform: translateY(-14px); }
+}
+
+@keyframes ub-logo-enter {
+  0%   { opacity: 0; filter: blur(8px); transform: translateY(14px); }
+  100% { opacity: 1; filter: blur(0);   transform: translateY(0); }
+}
