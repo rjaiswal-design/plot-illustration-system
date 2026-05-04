@@ -51,6 +51,20 @@ const COMPONENTS = [
 // for every brand (no per-brand pre-baked PNG).
 const EXTRA_COMPONENTS = ["pizza", "cart", "groceries"];
 
+const HEADS = [
+  "afro", "airy", "caesar", "chongo", "curly", "hijab-1", "hijab2", "long",
+  "no-hair", "pony", "rad", "short-1", "short-2", "short-beard", "top",
+  "turban-1", "turban2", "wavy",
+];
+const BODIES = [
+  "hoodie", "jacket", "jacket-2", "lab-coat", "long-sleeve",
+  "pointing-forward", "pointing-up", "pregnant", "trench-coat", "turtle-neck",
+];
+const BOTTOMS = [
+  "baggy-pants", "jogging", "shorts", "skinny-jeans", "skinny-jeans-walk",
+  "skirt", "sprint", "sweatpants",
+];
+
 // Source palette in noon SVG templates — substitution map keys.
 const TEMPLATE = {
   tint_2: "#FFF2A8",
@@ -185,6 +199,13 @@ function App() {
   const [genError, setGenError] = useState<string>("");
   const [genResult, setGenResult] = useState<{ svg: string; name: string } | null>(null);
   const [generated, setGenerated] = useState<Record<string, { name: string; svg: string }[]>>({});
+
+  // Humans mix-and-match state.
+  const [human, setHuman] = useState({
+    head: HEADS[0],
+    body: BODIES[0],
+    bottom: BOTTOMS[0],
+  });
 
   useEffect(() => {
     fetch("/assets/palettes.json")
@@ -359,6 +380,35 @@ function App() {
     }
   }
 
+  async function buildCombinedHumanSvg(): Promise<string> {
+    const [head, body, bottom] = await Promise.all([
+      fetch(`/assets/humans/head/${human.head}.svg`).then((r) => r.text()),
+      fetch(`/assets/humans/body/${human.body}.svg`).then((r) => r.text()),
+      fetch(`/assets/humans/bottom/${human.bottom}.svg`).then((r) => r.text()),
+    ]);
+    const inner = (svg: string) =>
+      svg.replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+    const W = 320;
+    const H = 460;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
+  <g transform="translate(10,225)">${inner(bottom)}</g>
+  <g transform="translate(32,80)">${inner(body)}</g>
+  <g transform="translate(92,0)">${inner(head)}</g>
+</svg>`;
+  }
+
+  async function downloadHumanSvg() {
+    const svg = await buildCombinedHumanSvg();
+    downloadSvgText(svg, `human-${human.head}-${human.body}-${human.bottom}.svg`);
+  }
+
+  async function copyHumanSvg() {
+    const svg = await buildCombinedHumanSvg();
+    const ok = await writeClipboard(svg);
+    setToast(ok ? "Copied combined SVG" : "Copy failed");
+    window.setTimeout(() => setToast(""), 1400);
+  }
+
   function addGeneratedToLibrary() {
     if (!genResult) return;
     setGenerated((prev) => ({
@@ -396,8 +446,9 @@ function App() {
           <div className="nav-label">Sections</div>
           <a className="nav-link active" href="#palette"><span>Palette</span><span className="num">01</span></a>
           <a className="nav-link" href="#components"><span>Components</span><span className="num">02</span></a>
-          <a className="nav-link" href="#principles"><span>Principles</span><span className="num">03</span></a>
-          <a className="nav-link" href="#checklist"><span>Checklist</span><span className="num">04</span></a>
+          <a className="nav-link" href="#humans"><span>Humans</span><span className="num">03</span></a>
+          <a className="nav-link" href="#principles"><span>Principles</span><span className="num">04</span></a>
+          <a className="nav-link" href="#checklist"><span>Checklist</span><span className="num">05</span></a>
         </div>
 
         <div className="brand-pickers">
@@ -442,7 +493,7 @@ function App() {
         <section id="palette" className="section">
           <div className="section-head">
             <h2>Palette</h2>
-            <span className="section-num">SECTION 01 / 04</span>
+            <span className="section-num">SECTION 01 / 05</span>
           </div>
           <p className="section-desc">
             Click any swatch to copy its hex. Each marketplace uses a 5-tone monochromatic ramp built
@@ -472,7 +523,7 @@ function App() {
               <button className="btn btn-ghost" onClick={() => setGenOpen(true)}>
                 <span className="sparkle">✦</span> Generate illustration
               </button>
-              <span className="section-num">SECTION 02 / 04</span>
+              <span className="section-num">SECTION 02 / 05</span>
             </div>
           </div>
           <p className="section-desc">
@@ -545,10 +596,100 @@ function App() {
           </div>
         </section>
 
+        <section id="humans" className="section">
+          <div className="section-head">
+            <h2>Humans</h2>
+            <div className="section-actions">
+              <button
+                className="btn btn-ghost"
+                onClick={() =>
+                  setHuman({
+                    head: HEADS[Math.floor(Math.random() * HEADS.length)],
+                    body: BODIES[Math.floor(Math.random() * BODIES.length)],
+                    bottom: BOTTOMS[Math.floor(Math.random() * BOTTOMS.length)],
+                  })
+                }
+              >
+                ⚄ Randomize
+              </button>
+              <span className="section-num">SECTION 03 / 05</span>
+            </div>
+          </div>
+          <p className="section-desc">
+            Mix-and-match characters from the Humaaans library. Pick a head, body, and bottom — the
+            figure recomposes in real time. Download or copy the combined SVG.
+          </p>
+
+          <div className="humans-console">
+            <div className="figure-stage">
+              <div className="figure">
+                <img
+                  className="figure-bottom"
+                  src={`/assets/humans/bottom/${human.bottom}.svg`}
+                  alt={human.bottom}
+                />
+                <img
+                  className="figure-body"
+                  src={`/assets/humans/body/${human.body}.svg`}
+                  alt={human.body}
+                />
+                <img
+                  className="figure-head"
+                  src={`/assets/humans/head/${human.head}.svg`}
+                  alt={human.head}
+                />
+              </div>
+              <div className="figure-meta">
+                <div className="figure-meta-row"><span>HEAD</span>{human.head.replace(/-/g, " ")}</div>
+                <div className="figure-meta-row"><span>BODY</span>{human.body.replace(/-/g, " ")}</div>
+                <div className="figure-meta-row"><span>BOTTOM</span>{human.bottom.replace(/-/g, " ")}</div>
+              </div>
+              <div className="figure-actions">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => downloadHumanSvg()}
+                >
+                  Download SVG
+                </button>
+                <button
+                  className="btn"
+                  onClick={() => copyHumanSvg()}
+                >
+                  Copy SVG
+                </button>
+              </div>
+            </div>
+
+            <div className="parts-panel">
+              <PartRow
+                label="Head"
+                items={HEADS}
+                active={human.head}
+                kind="head"
+                onSelect={(v) => setHuman((p) => ({ ...p, head: v }))}
+              />
+              <PartRow
+                label="Body"
+                items={BODIES}
+                active={human.body}
+                kind="body"
+                onSelect={(v) => setHuman((p) => ({ ...p, body: v }))}
+              />
+              <PartRow
+                label="Bottom"
+                items={BOTTOMS}
+                active={human.bottom}
+                kind="bottom"
+                onSelect={(v) => setHuman((p) => ({ ...p, bottom: v }))}
+              />
+            </div>
+          </div>
+        </section>
+
         <section id="principles" className="section">
           <div className="section-head">
             <h2>Principles</h2>
-            <span className="section-num">SECTION 03 / 04</span>
+            <span className="section-num">SECTION 04 / 05</span>
           </div>
           <p className="section-desc">
             The rules that make an illustration <em>noon</em>. Every team member should know these
@@ -568,7 +709,7 @@ function App() {
         <section id="checklist" className="section">
           <div className="section-head">
             <h2>Checklist</h2>
-            <span className="section-num">SECTION 04 / 04</span>
+            <span className="section-num">SECTION 05 / 05</span>
           </div>
           <p className="section-desc">Quick visual check before shipping any illustration.</p>
           <div className="do-dont">
@@ -882,6 +1023,43 @@ function Slider({
         style={track ? ({ "--slider-track": track } as React.CSSProperties) : undefined}
       />
     </label>
+  );
+}
+
+function PartRow({
+  label,
+  items,
+  active,
+  kind,
+  onSelect,
+}: {
+  label: string;
+  items: string[];
+  active: string;
+  kind: "head" | "body" | "bottom";
+  onSelect: (v: string) => void;
+}) {
+  return (
+    <div className="part-row">
+      <div className="part-row-head">
+        <span className="part-label">{label}</span>
+        <span className="part-count">
+          {String(items.indexOf(active) + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+        </span>
+      </div>
+      <div className="part-thumbs">
+        {items.map((name) => (
+          <button
+            key={name}
+            className={`part-thumb ${active === name ? "active" : ""}`}
+            onClick={() => onSelect(name)}
+            title={name.replace(/-/g, " ")}
+          >
+            <img src={`/assets/humans/${kind}/${name}.svg`} alt={name} loading="lazy" />
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
 
