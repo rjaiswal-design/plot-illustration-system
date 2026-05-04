@@ -748,6 +748,33 @@ h2 {
   text-transform: uppercase;
 }
 /* ─── Humans Mix-and-Match ─────────────────────────────── */
+.style-toggle {
+  display: inline-flex;
+  background: var(--ub-bg-deep);
+  border: 1px solid var(--ub-border-soft);
+  border-radius: var(--ub-radius-pill);
+  padding: 3px;
+  gap: 2px;
+}
+.style-toggle-btn {
+  font-family: var(--ub-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: transparent;
+  border: none;
+  color: var(--ub-fg-muted);
+  padding: 6px 14px;
+  border-radius: var(--ub-radius-pill);
+  cursor: pointer;
+  transition: all 0.15s var(--ub-ease-standard);
+}
+.style-toggle-btn:hover { color: var(--ub-fg); }
+.style-toggle-btn.active {
+  background: var(--ub-accent);
+  color: #000;
+}
+
 .humans-console {
   display: grid;
   grid-template-columns: 380px 1fr;

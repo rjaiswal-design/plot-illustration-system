@@ -65,6 +65,18 @@ const BOTTOMS = [
   "skirt", "sprint", "sweatpants",
 ];
 
+const HEADS_GULF = [
+  "ghutra-white", "shemagh-red", "kufi-cap", "hijab-navy", "hijab-burgundy",
+];
+const BODIES_GULF = ["thobe-white", "abaya-black", "kandura-cream"];
+const BOTTOMS_GULF = ["thobe-hem-white", "abaya-hem-black", "long-skirt-brown"];
+
+const HUMAN_STYLES = [
+  { id: "default", label: "Modern", heads: HEADS, bodies: BODIES, bottoms: BOTTOMS },
+  { id: "gulf", label: "Gulf", heads: HEADS_GULF, bodies: BODIES_GULF, bottoms: BOTTOMS_GULF },
+] as const;
+type HumanStyleId = (typeof HUMAN_STYLES)[number]["id"];
+
 // Source palette in noon SVG templates — substitution map keys.
 const TEMPLATE = {
   tint_2: "#FFF2A8",
@@ -201,11 +213,24 @@ function App() {
   const [generated, setGenerated] = useState<Record<string, { name: string; svg: string }[]>>({});
 
   // Humans mix-and-match state.
+  const [humanStyle, setHumanStyle] = useState<HumanStyleId>("default");
   const [human, setHuman] = useState({
     head: HEADS[0],
     body: BODIES[0],
     bottom: BOTTOMS[0],
   });
+
+  const activeHumanPool = useMemo(
+    () => HUMAN_STYLES.find((s) => s.id === humanStyle) ?? HUMAN_STYLES[0],
+    [humanStyle]
+  );
+
+  function switchHumanStyle(id: HumanStyleId) {
+    if (id === humanStyle) return;
+    const pool = HUMAN_STYLES.find((s) => s.id === id) ?? HUMAN_STYLES[0];
+    setHumanStyle(id);
+    setHuman({ head: pool.heads[0], body: pool.bodies[0], bottom: pool.bottoms[0] });
+  }
 
   useEffect(() => {
     fetch("/assets/palettes.json")
@@ -600,15 +625,27 @@ function App() {
           <div className="section-head">
             <h2>Humans</h2>
             <div className="section-actions">
+              <div className="style-toggle">
+                {HUMAN_STYLES.map((s) => (
+                  <button
+                    key={s.id}
+                    className={`style-toggle-btn ${humanStyle === s.id ? "active" : ""}`}
+                    onClick={() => switchHumanStyle(s.id)}
+                  >
+                    {s.label}
+                  </button>
+                ))}
+              </div>
               <button
                 className="btn btn-ghost"
-                onClick={() =>
+                onClick={() => {
+                  const p = activeHumanPool;
                   setHuman({
-                    head: HEADS[Math.floor(Math.random() * HEADS.length)],
-                    body: BODIES[Math.floor(Math.random() * BODIES.length)],
-                    bottom: BOTTOMS[Math.floor(Math.random() * BOTTOMS.length)],
-                  })
-                }
+                    head: p.heads[Math.floor(Math.random() * p.heads.length)],
+                    body: p.bodies[Math.floor(Math.random() * p.bodies.length)],
+                    bottom: p.bottoms[Math.floor(Math.random() * p.bottoms.length)],
+                  });
+                }}
               >
                 ⚄ Randomize
               </button>
@@ -663,21 +700,21 @@ function App() {
             <div className="parts-panel">
               <PartRow
                 label="Head"
-                items={HEADS}
+                items={activeHumanPool.heads}
                 active={human.head}
                 kind="head"
                 onSelect={(v) => setHuman((p) => ({ ...p, head: v }))}
               />
               <PartRow
                 label="Body"
-                items={BODIES}
+                items={activeHumanPool.bodies}
                 active={human.body}
                 kind="body"
                 onSelect={(v) => setHuman((p) => ({ ...p, body: v }))}
               />
               <PartRow
                 label="Bottom"
-                items={BOTTOMS}
+                items={activeHumanPool.bottoms}
                 active={human.bottom}
                 kind="bottom"
                 onSelect={(v) => setHuman((p) => ({ ...p, bottom: v }))}
@@ -1034,7 +1071,7 @@ function PartRow({
   onSelect,
 }: {
   label: string;
-  items: string[];
+  items: readonly string[];
   active: string;
   kind: "head" | "body" | "bottom";
   onSelect: (v: string) => void;
