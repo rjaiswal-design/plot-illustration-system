@@ -71,9 +71,16 @@ const HEADS_GULF = [
 const BODIES_GULF = ["thobe-white", "abaya-black", "kandura-cream"];
 const BOTTOMS_GULF = ["thobe-hem-white", "abaya-hem-black", "long-skirt-brown"];
 
+const HEADS_DELIVERY = [
+  "delivery-helmet-light", "delivery-helmet-tan", "delivery-helmet-brown",
+];
+const BODIES_DELIVERY = ["delivery-rider"];
+const BOTTOMS_DELIVERY = ["delivery-running", "delivery-pants-walk", "delivery-pants"];
+
 const HUMAN_STYLES = [
   { id: "default", label: "Modern", heads: HEADS, bodies: BODIES, bottoms: BOTTOMS },
   { id: "gulf", label: "Gulf", heads: HEADS_GULF, bodies: BODIES_GULF, bottoms: BOTTOMS_GULF },
+  { id: "delivery", label: "Delivery", heads: HEADS_DELIVERY, bodies: BODIES_DELIVERY, bottoms: BOTTOMS_DELIVERY },
 ] as const;
 type HumanStyleId = (typeof HUMAN_STYLES)[number]["id"];
 
